@@ -9,10 +9,12 @@
     - [Conditionals](#conditionals)
     - [Loops](#loops)
       - [While Loops](#while-loops)
-      - [Parts Of The `While Loops`](#parts-of-the-while-loops)
+      - [Parts Of The While Loops](#parts-of-the-while-loops)
       - [Part of the For Loop](#part-of-the-for-loop)
       - [Increment and Decrement](#increment-and-decrement)
       - [Scope](#scope)
+    - [Function](#function)
+      - [Function Recap](#function-recap)
 
 ### Lesson 1 (What is JavaScript?)
 
@@ -213,7 +215,7 @@ while (x <= 10000) {
 }
 ```
 
-#### Parts Of The `While Loops`
+#### Parts Of The While Loops
 
 There are many different kinds of loops, but they all essentially do the same thing: they repeat an action some number of times.
 
@@ -334,3 +336,69 @@ There are three ways to declare a variable:
 1. `let` - It a new way to declare a variable in any scope - Global, Local, or Block. The value of this variable can be changed or reassigned anytime within its scope.
 2. `const` - It is also a way to declare constants in any scope - Global, Local, or Block. Once you are assigned a value to a `const` variable, the value of this variable CANNOT be changed or reassigned throughout the code.
 3. `var` - This is the old way of declaring variables in only two scope - Global, or Local. Variables declared with the `var` keyword can not have Block Scope. The value of this variable can be changed or reassigned anytime within its scope.
+
+### Function
+
+**How to declare a function**:
+
+Functions allow you to package up lines of code that you can use (and often reuse) in your programs.
+
+```js
+function findAverage(x, y) {
+  var answer = (x + y) / 2;
+  return answer;
+}
+
+var avg = findAverage(5, 9);
+```
+
+> **Parameters vs. Arguments**
+At first, it can be a bit tricky to know when something is either a parameter or an argument. The key difference is in where they show up in the code. A parameter is always going to be a variable name and appears in the function declaration. On the other hand, an argument is always going to be a value (i.e. any of the JavaScript data types - a number, a string, a boolean, etc.) and will always appear in the code when the function is called or invoked.
+
+In the above `findAverage(x, y)` `x`,`y` is called parameter.
+and, `findAverage(5, 9)`, `5`, `9` is called arguments.
+
+#### Function Recap
+
+**What you've learned so far:**
+
+**Functions** package up code so you can easily use (and reuse) a block of code. **Parameters** are variables that are used to store the data that's passed into a function for the function to use. **Arguments** are the actual data that's passed into a function when it is invoked:
+
+```js
+// x and y are parameters in this function declaration
+function add(x, y) {
+  // function body
+  // Here, `sum` variable has a scope within the function.
+  // Such variables defined within a function are called Local variables
+  // You can try giving it another name
+  var sum = x + y;
+  return sum; // return statement
+}
+
+// 1 and 2 are passed into the function as arguments,
+// and the result returned by the function is stored in a new variable `sum`
+// Here, `sum` is another variable, different from the one used inside the function
+var sum = add(1, 2);
+```
+
+The function body is enclosed inside curly brackets:
+
+```js
+function add(x, y) {
+  // function body!
+}
+```
+
+**Return statements** explicitly make your function return a value:
+
+```js
+return sum;
+```
+
+You **invoke** or **call** a function to have it do something:
+
+```js
+add(1, 2);
+```
+
+**Returns**: 3
