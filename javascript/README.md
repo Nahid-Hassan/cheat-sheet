@@ -15,6 +15,18 @@
       - [Scope](#scope)
     - [Function](#function)
       - [Function Recap](#function-recap)
+      - [Scope Shadowing](#scope-shadowing)
+      - [Remind about Scope](#remind-about-scope)
+      - [Hoisting](#hoisting)
+      - [Function Expressions](#function-expressions)
+      - [Patterns with Function Expressions](#patterns-with-function-expressions)
+      - [Function Expression Recap](#function-expression-recap)
+    - [Arrays](#arrays)
+    - [Array Indexing](#array-indexing)
+      - [Array Methods and Properties](#array-methods-and-properties)
+      - [forEach](#foreach)
+      - [Map()](#map)
+      - [2D Array](#2d-array)
 
 ### Lesson 1 (What is JavaScript?)
 
@@ -316,7 +328,8 @@ function showMessage() {
     {
           let greet = "How are you doing?";
         /*
-         * We have used the keyword `let` to declare a variable `greet` because variables declared with the `var` keyword can not have Block Scope.
+         * We have used the keyword `let` to declare a variable `greet` because
+         variables declared with the `var` keyword can not have Block Scope.
          */
     } // block scope ends
 
@@ -402,3 +415,416 @@ add(1, 2);
 ```
 
 **Returns**: 3
+
+#### Scope Shadowing
+
+```js
+var x = 1;
+
+function addTwo() {
+  x = x + 2; // x value is change
+}
+
+addTwo();
+x = x + 1;
+console.log(x);
+// 4
+```
+
+```js
+var x = 1;
+
+function addTwo() {
+  var x = x + 2; // declare new x
+}
+
+addTwo();
+x = x + 1;
+console.log(x);
+// 2
+```
+
+#### Remind about Scope
+
+- If an identifier is declared in global scope, it's available everywhere.
+- If an identifier is declared in function scope, it's available in the function it was declared in (even in functions declared inside the function).
+- When trying to access an identifier, the JavaScript Engine will first look in the current function. If it doesn't find anything, it will continue to the next outer function to see if it can find the identifier there. It will keep doing this until it reaches the global scope.
+- Global identifiers are a bad idea. They can lead to bad variable names, conflicting variable names, and messy code.
+
+#### Hoisting
+
+Sometimes your JavaScript code will produce errors that may seem counterintuitive at first. Hoisting is another one of those topics that might be the cause of some of these tricky errors you're debugging.
+
+Let's take a look at an example:
+
+[![Image Alt Text Here](https://img.youtube.com/vi/8z-HSS34dsM/0.jpg)](https://www.youtube.com/watch?v=8z-HSS34dsM)
+
+The function declaration is hoisted to the top of its current scope, and inside the function, the greeting variable declaration is also hoisted to the top of its function scope.
+
+```js
+sayHi("Julia");
+
+function sayHi(name) {
+  console.log(greeting + " " + name);
+  var greeting;
+}
+```
+
+- JavaScript hoists function declarations and variable declarations to the top of the current scope.
+- Variable assignments are not hoisted.
+- Declare functions and variables at the top of your scripts, so the syntax and behavior are consistent with each other.
+
+#### Function Expressions
+
+Once you know how to declare a function, a whole new set of possibilities will open up to you.
+
+For instance, remember how you can store anything you want in a variable? Well, in JavaScript, you can also store functions in variables. When a function is stored inside a variable it's called a `function expression`.
+
+```js
+var catSays = function(max) {
+  var catMessage = "";
+  for (var i = 0; i < max; i++) {
+    catMessage += "meow ";
+  }
+  return catMessage;
+};
+```
+
+Notice how the function keyword no longer has a name.
+
+```js
+var catSays = function(max) {
+  // code here
+};
+```
+
+It's an **anonymous** function, a function with no name, and you've stored it in a variable called **catSays**.
+
+And, if you try accessing the value of the variable catSays, you'll even see the function returned back to you.
+
+```js
+catSays;
+```
+
+Returns:
+
+```js
+function(max) {
+  var catMessage = ""
+  for (var i = 0; i < max; i++) {
+    catMessage += "meow ";
+  }
+  return catMessage;
+}
+```
+
+**Function expressions and hoisting**:
+
+Deciding when to use a function expression and when to use a function declaration can depend on a few things, and you will see some ways to use them in the next section. But, one thing you'll want to be careful of is hoisting.
+
+All function declarations are hoisted and loaded before the script is actually run. ***Function expressions are not hoisted***, since they involve variable assignment, and only variable declarations are hoisted. The function expression will not be loaded until the interpreter reaches it in the script.
+
+#### Patterns with Function Expressions
+
+**Functions as parameters**:
+
+Being able to store a function in a variable makes it really simple to pass the function into another function. `A function that is passed into another function is called a callback`. Let's say you had a helloCat() function, and you wanted it to return "Hello" followed by a string of "meows" like you had with catSays. Well, rather than redoing all of your hard work, you can make helloCat() accept a callback function, and pass in catSays.
+
+```js
+// function expression catSays
+var catSays = function(max) {
+  var catMessage = "";
+  for (var i = 0; i < max; i++) {
+    catMessage += "meow ";
+  }
+  return catMessage;
+};
+
+// function declaration helloCat accepting a callback
+function helloCat(callbackFunc) {
+  return "Hello " + callbackFunc(3);
+}
+
+// pass in catSays as a callback function
+helloCat(catSays);
+```
+
+**Inline function expressions**:
+
+```js
+// Function declaration that takes in two arguments: a function for displaying
+// a message, along with a name of a movie
+function movies(messageFunction, name) {
+  messageFunction(name);
+}
+
+// Call the movies function, pass in the function and name of movie
+movies(function displayFavorite(movieName) {
+  console.log("My favorite movie is " + movieName);
+}, "Finding Nemo");
+```
+
+#### Function Expression Recap
+
+**What you've learned so far:**
+
+**Function Expression**: When a function is assigned to a variable. The function can be named, or anonymous. Use the variable name to call a function defined in a function expression.
+
+```js
+// anonymous function expression
+var doSomething = function(y) {
+  return y + 1;
+};
+```
+
+```js
+// named function expression
+var doSomething = function addOne(y) {
+  return y + 1;
+};
+```
+
+```js
+// for either of the definitions above, call the function like this:
+doSomething(5);
+```
+
+> **Returns**: 6
+
+You can even pass a function into another function inline. This pattern is commonly used in JavaScript, and can be helpful streamlining your code.
+
+```js
+// function declaration that takes in two arguments: a function for displaying
+// a message, along with a name of a movie
+function movies(messageFunction, name) {
+  messageFunction(name);
+}
+
+// call the movies function, pass in the function and name of movie
+movies(function displayFavorite(movieName) {
+  console.log("My favorite movie is " + movieName);
+}, "Finding Nemo");
+```
+
+### Arrays
+
+An array is a data structure that you can use to store multiple values and arrays are also organized.
+
+An array is useful because it stores multiple values into a single, organized data structure. You can define a new array by listing values separated with commas between square brackets [].
+
+```js
+// creates a `donuts` array with three strings
+var donuts = ["glazed", "powdered", "jelly"];
+```
+
+But **strings** aren’t the only type of data you can store in an array. You can also store numbers, booleans… and really anything!
+
+```js
+// creates a `mixedData` array with mixed data types
+var mixedData = ["abcd", 1, true, undefined, null, "all the things"];
+```
+
+You can even store an array in an array to create a nested array!
+
+```js
+// creates a `arraysInArrays` array with three arrays
+var arraysInArrays = [[1, 2, 3], ["Julia", "James"], [true, false, true, false]];
+```
+
+Nested arrays can be particularly hard to read, so it's common to write them on one line, using a newline after each comma:
+
+```js
+var arraysInArrays = [
+  [1, 2, 3],
+  ["Julia", "James"],
+  [true, false, true, false]
+];
+```
+
+### Array Indexing
+
+```js
+var donuts = ["glazed", "chocolate frosted", "boston cream", "powdered", "sprinkled", "maple", "coconut", "jelly"];
+
+
+donuts[2] = "cinnamon twist";
+donuts[4] = "salted caramel";
+donuts[5] = "shortcake eclair";
+```
+
+```js
+console.log(donuts);
+// ["glazed", "chocolate frosted", "cinnamon twist", "powdered", "salted caramel", "shortcake eclair", "coconut", "jelly"]
+```
+
+> One thing to be aware of is if you try to access an element at an index that does not exist, a value of undefined will be returned back.
+
+#### Array Methods and Properties
+
+[Array methods and properties - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
+**Length**:
+
+**Ex#1**:
+
+```js
+var donuts = ["glazed", "powdered", "sprinkled"];
+console.log(donuts.length);
+```
+
+**Returns**: 3
+
+**Ex#2**:
+
+```js
+var inventory = [
+  ["gold pieces", 25],
+  ["belt", 4],
+  ["ring", 1],
+  ["shoes", 2]
+];
+console.log(inventory.length);
+```
+
+**Returns**: 4
+
+**Push()**: Add element in the end of the array.
+
+```js
+var nums = [1,2,3];
+nums.push(4);
+console.log(nums);
+```
+
+**Showed**: [1,2,3,4]
+
+**Pop()**: Remove and return the last element of the array.
+
+```js
+var nums = [1,2,3];
+console.log(nums);
+nums.pop();
+console.log(nums);
+```
+
+**Showed**: [1,2]
+
+**Splice**:
+
+`splice()` is another handy method that allows you to add and remove elements from anywhere within an array.
+
+While push() and pop() limit you to adding and removing elements from the end of an array, `splice()` lets you specify the index location to add new elements, as well as the number of elements you'd like to delete (if any).
+
+```js
+var donuts = ["glazed", "chocolate frosted", "Boston creme", "glazed cruller"];
+donuts.splice(1, 1, "chocolate cruller", "creme de leche"); // removes "chocolate frosted" at index 1 and adds "chocolate cruller" and "creme de leche" starting at index 1
+```
+
+Following is the syntax of `splice()` method:
+
+```js
+arrayName.splice(arg1, arg2, item1, ....., itemX); where,
+```
+
+- `arg1` = Mandatory argument. Specifies the starting index position to add/remove items. You can use a negative value to specify the position from the end of the array e.g., `-1` specifies the `last` element.
+
+- `arg2` = Optional argument. Specifies the count of elements to be removed. If set to `0`, `no` items will be `removed`.
+
+`item1, ....., itemX` are the items to be added at index position `arg1`
+
+#### forEach
+
+Arrays have a set of special methods to help you iterate over and perform operations on collections of data. You can view the MDN Documentation list of Array methods here, but a couple big ones to know are the `forEach()` and `map()` methods.
+
+The `forEach()` method gives you an alternative way to iterate over an array, and manipulate each element in the array with an inline function expression.
+
+```js
+var donuts = ["jelly donut", "chocolate donut", "glazed donut"];
+
+donuts.forEach(function(donut) {
+  donut += " hole";
+  donut = donut.toUpperCase();
+  console.log(donut);
+});
+```
+
+**Prints**:
+
+```js
+JELLY DONUT HOLE
+CHOCOLATE DONUT HOLE
+GLAZED DONUT HOLE
+```
+
+Notice that the `forEach()` method iterates over the array without the need of an explicitly defined index. In the example above, donut corresponds to the element in the array itself. This is different from a for or while loop where an index is used to access each element in the array:
+
+```js
+for (var i = 0; i < donuts.length; i++) {
+  donuts[i] += " hole";
+  donuts[i] = donuts[i].toUpperCase();
+  console.log(donuts[i]);
+}
+```
+
+**Parameters**:
+
+The function that you pass to the `forEach()` method can take up to three parameters. In the video, these are called `element, index, and array`, but you can call them whatever you like.
+
+The forEach() method will call this function once for each element in the array (hence the name forEach.) Each time, it will call the function with different arguments. The element parameter will get the value of the array element. The index parameter will get the index of the element (starting with zero). The array parameter will get a reference to the whole array, which is handy if you want to modify the elements.
+
+Here's another example:
+
+```js
+words = ["cat", "in", "hat"];
+words.forEach(function(word, num, all) {
+  console.log("Word " + num + " in " + all.toString() + " is " + word);
+});
+```
+
+**Prints**:
+
+```js
+Word 0 in cat,in,hat is cat
+Word 1 in cat,in,hat is in
+Word 2 in cat,in,hat is hat
+```
+
+On the next page, you'll do a quiz that uses the forEach() method to modify an array.
+
+#### Map()
+
+Using `forEach()` will not be useful if you want to permanently modify the original array. forEach() always returns undefined. However, creating a new array from an existing array is simple with the powerful map() method.
+
+With the `map()` method, you can take an array, perform some operation on each element of the array, and return a new array.
+
+```js
+var donuts = ["jelly donut", "chocolate donut", "glazed donut"];
+
+var improvedDonuts = donuts.map(function(donut) {
+  donut += " hole";
+  donut = donut.toUpperCase();
+  return donut;
+});
+```
+
+```js
+donuts array: ["jelly donut", "chocolate donut", "glazed donut"]
+improvedDonuts array: ["JELLY DONUT HOLE", "CHOCOLATE DONUT HOLE", "GLAZED DONUT HOLE"]
+```
+
+Oh man, did you just see that? The map() method accepts one argument, a function that will be used to manipulate each element in the array. In the above example, we used a function expression to pass that function into map(). This function is taking in one argument, donut which corresponds to each element in the donuts array. You no longer need to iterate over the indices anymore. map() does all that work for you.
+
+#### 2D Array
+
+```js
+var donutBox = [
+  ["glazed", "chocolate glazed", "cinnamon"],
+  ["powdered", "sprinkled", "glazed cruller"],
+  ["chocolate cruller", "Boston creme", "creme de leche"]
+];
+
+// here, donutBox.length refers to the number of rows of donuts
+for (var row = 0; row < donutBox.length; row++) {
+  console.log(donutBox[row]);
+}
+```
