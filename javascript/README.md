@@ -27,6 +27,9 @@
       - [forEach](#foreach)
       - [Map()](#map)
       - [2D Array](#2d-array)
+    - [Objects](#objects)
+      - [Objects in Code](#objects-in-code)
+    - [Object-literal notation](#object-literal-notation)
 
 ### Lesson 1 (What is JavaScript?)
 
@@ -820,7 +823,7 @@ Oh man, did you just see that? The map() method accepts one argument, a function
 var donutBox = [
   ["glazed", "chocolate glazed", "cinnamon"],
   ["powdered", "sprinkled", "glazed cruller"],
-  ["chocolate cruller", "Boston creme", "creme de leche"]
+  ["chocolate cruller", "Boston creme", "creme de leched"]
 ];
 
 // here, donutBox.length refers to the number of rows of donuts
@@ -828,3 +831,96 @@ for (var row = 0; row < donutBox.length; row++) {
   console.log(donutBox[row]);
 }
 ```
+
+### Objects
+
+Objects are a data structures in JavaScript that lets you data about a particular thing,
+and helps you keep track of the data by using a **key**.
+
+#### Objects in Code
+
+```js
+/*
+ * Programming Quiz: Umbrella (7-1)
+ */
+/*
+ * QUIZ REQUIREMENTS
+ * - Your code should have a variable `umbrella`
+ * - The variable `umbrella` should be an object
+ * - Your `umbrella` object should have the `color` and `isOpen` property
+ * - Your `umbrella` object should have an `open()` method that toggles the value of `isOpen` property
+ * - Your `umbrella` object should have an `close()` method that toggles the value of `isOpen`
+ */
+
+var umbrella = {
+    color: "pink",
+    isOpen: true,
+    open: function() {
+        if (umbrella.isOpen === true) {
+            return "The umbrella is already opened!";
+        } else {
+            umbrella.isOpen = true;
+            return "Julia opens the umbrella!";
+        }
+    },
+    // your code goes here
+    close: function() {
+        if (umbrella.isOpen === true) {
+            umbrella.isOpen = false;
+            return "Close the umbrella!";
+        } else {
+            return "Umbrella is already colsed!";
+        }
+    },
+
+};
+```
+
+### Object-literal notation
+
+```js
+var sister = {
+  name: "Sarah",
+  age: 23,
+  parents: [ "alice", "andy" ],
+  siblings: ["julia"],
+  favoriteColor: "purple",
+  pets: true
+};
+```
+
+The syntax you see above is called **object-literal notation**. There are some important things you need to remember when you're structuring an object literal:
+
+- The "key" (representing a property or method name) and its "value" are separated from each other by a colon
+- The key: value pairs are separated from each other by commas
+- The entire object is wrapped inside curly braces { }.
+
+And, kind of like how you can look up a word in the dictionary to find its definition, the key in a key:value pair allows you to look up a piece of information about an object. Here's are a couple examples of how you can retrieve information about my sister's parents using the object you created.
+
+```js
+// two equivalent ways to use the key to return its value
+sister["parents"] // returns [ "alice", "andy" ]
+sister.parents // also returns ["alice", "andy"]
+```
+
+**What about methods?**:
+
+The sister object above contains a bunch of properties about my sister, but doesn't really say what my sister does. For instance, let's say my sister likes to paint. You might have a paintPicture() method that returns "Sarah paints a picture!" whenever you call it. The syntax for this is pretty much exactly the same as how you defined the properties of the object. The only difference is, the value in the key:value pair will be a function.
+
+```js
+var sister = {
+  name: "Sarah",
+  age: 23,
+  parents: [ "alice", "andy" ],
+  siblings: ["julia"],
+  favoriteColor: "purple",
+  pets: true,
+  paintPicture: function() { return "Sarah paints!"; }
+};
+```
+
+Call methods..........
+
+```js
+sister.paintPicture();
+````
